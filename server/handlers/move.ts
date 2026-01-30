@@ -3,11 +3,10 @@ import { convex } from "../lib/convex-client.js";
 import { api } from "../../convex/_generated/api.js";
 import { normalizePath, getParentPath, getBaseName } from "../lib/paths.js";
 
-const TENANT = "default";
-
 export async function handleMove(
   req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   const destHeader = req.headers["destination"] as string | undefined;
@@ -18,19 +17,32 @@ export async function handleMove(
   }
 
   // Destination can be a full URL or an absolute path
-  let dstPath: string;
+  let rawDstPath: string;
   try {
     const url = new URL(destHeader);
-    dstPath = normalizePath(url.pathname);
+    rawDstPath = normalizePath(url.pathname);
   } catch {
-    dstPath = normalizePath(destHeader);
+    rawDstPath = normalizePath(destHeader);
   }
+
+  // Strip the /{sandboxId} prefix from the destination path
+  const prefix = `/${sandboxId}`;
+  if (!rawDstPath.startsWith(prefix)) {
+    res.writeHead(400);
+    res.end("Cross-sandbox moves are not allowed");
+    return;
+  }
+
+  const dstPath =
+    rawDstPath.length === prefix.length
+      ? "/"
+      : normalizePath(rawDstPath.slice(prefix.length));
 
   const dstName = getBaseName(dstPath);
   const dstParentPath = getParentPath(dstPath);
 
   await convex.mutation(api.files.movePath, {
-    tenantId: TENANT,
+    tenantId: sandboxId,
     srcPath: urlPath,
     dstPath,
     dstName,

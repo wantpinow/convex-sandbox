@@ -6,6 +6,8 @@ services:
     entrypoint: ["sh", "/run-tests.sh"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    environment:
+      - SANDBOX_ID=${SANDBOX_ID:-test-sandbox}
 
   davfs-mount:
     image: debian:bookworm-slim
@@ -16,13 +18,14 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       - DEBIAN_FRONTEND=noninteractive
+      - SANDBOX_ID=${SANDBOX_ID:-test-sandbox}
     entrypoint:
       - bash
       - -c
       - |
         apt-get update && apt-get install -y --no-install-recommends davfs2 && \
         mkdir -p /mnt/webdav && \
-        echo "http://host.docker.internal:1900 none none" >> /etc/davfs2/secrets && \
-        mount -t davfs http://host.docker.internal:1900 /mnt/webdav -o nointeractive && \
+        echo "http://host.docker.internal:1900/${SANDBOX_ID}/ none none" >> /etc/davfs2/secrets && \
+        mount -t davfs http://host.docker.internal:1900/${SANDBOX_ID}/ /mnt/webdav -o nointeractive && \
         echo "WebDAV mounted at /mnt/webdav" && \
         exec bash

@@ -3,15 +3,14 @@ import { convex } from "../lib/convex-client.js";
 import { api } from "../../convex/_generated/api.js";
 import type { FileMeta } from "../lib/types.js";
 
-const TENANT = "default";
-
 export async function handleHead(
   _req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   const stat = (await convex.query(api.files.statPath, {
-    tenantId: TENANT,
+    tenantId: sandboxId,
     path: urlPath,
   })) as FileMeta | null;
 

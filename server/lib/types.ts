@@ -19,5 +19,6 @@ export interface FileMeta {
 export type DavHandler = (
   req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ) => Promise<void>;

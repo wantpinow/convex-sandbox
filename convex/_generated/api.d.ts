@@ -9,6 +9,7 @@
  */
 
 import type * as files from "../files.js";
+import type * as sandboxes from "../sandboxes.js";
 
 import type {
   ApiFromModules,
@@ -18,6 +19,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   files: typeof files;
+  sandboxes: typeof sandboxes;
 }>;
 
 /**

@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-BASE_URL="http://host.docker.internal:1900"
+SANDBOX_ID="${SANDBOX_ID:-test-sandbox}"
+BASE_URL="http://host.docker.internal:1900/${SANDBOX_ID}"
 PASS=0
 FAIL=0
 

@@ -2,11 +2,10 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { convex } from "../lib/convex-client.js";
 import { api } from "../../convex/_generated/api.js";
 
-const TENANT = "default";
-
 export async function handleDelete(
   _req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   if (urlPath === "/") {
@@ -16,7 +15,7 @@ export async function handleDelete(
   }
 
   await convex.mutation(api.files.deletePath, {
-    tenantId: TENANT,
+    tenantId: sandboxId,
     path: urlPath,
   });
 

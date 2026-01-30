@@ -21,4 +21,10 @@ export default defineSchema({
     .index("by_tenant_path", ["tenantId", "path", "status"])
     .index("by_tenant_parent", ["tenantId", "parentPath", "status"])
     .index("by_status", ["status"]),
+
+  sandboxes: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    createdAt: v.number(),
+  }).index("by_slug", ["slug"]),
 });

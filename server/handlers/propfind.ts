@@ -4,11 +4,10 @@ import { api } from "../../convex/_generated/api.js";
 import { multistatusXml } from "../lib/xml.js";
 import type { FileMeta } from "../lib/types.js";
 
-const TENANT = "default";
-
 export async function handlePropfind(
   req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   const depth = req.headers["depth"] ?? "1";
@@ -17,20 +16,20 @@ export async function handlePropfind(
 
   if (urlPath === "/") {
     // Root is an implicit directory — always exists
-    entries.push(["/", null]);
+    entries.push([`/${sandboxId}/`, null]);
 
     if (depth !== "0") {
       const children = (await convex.query(api.files.listDir, {
-        tenantId: TENANT,
+        tenantId: sandboxId,
         parentPath: "/",
       })) as FileMeta[];
       for (const child of children) {
-        entries.push([child.path, child]);
+        entries.push([`/${sandboxId}${child.path}`, child]);
       }
     }
   } else {
     const stat = (await convex.query(api.files.statPath, {
-      tenantId: TENANT,
+      tenantId: sandboxId,
       path: urlPath,
     })) as FileMeta | null;
 
@@ -40,15 +39,15 @@ export async function handlePropfind(
       return;
     }
 
-    entries.push([stat.path, stat]);
+    entries.push([`/${sandboxId}${stat.path}`, stat]);
 
     if (stat.type === "dir" && depth !== "0") {
       const children = (await convex.query(api.files.listDir, {
-        tenantId: TENANT,
+        tenantId: sandboxId,
         parentPath: stat.path,
       })) as FileMeta[];
       for (const child of children) {
-        entries.push([child.path, child]);
+        entries.push([`/${sandboxId}${child.path}`, child]);
       }
     }
   }

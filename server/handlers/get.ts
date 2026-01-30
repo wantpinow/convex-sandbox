@@ -7,15 +7,14 @@ import { parseRange } from "../lib/range.js";
 import type { FileMeta } from "../lib/types.js";
 import type { Readable } from "stream";
 
-const TENANT = "default";
-
 export async function handleGet(
   req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   const stat = (await convex.query(api.files.statPath, {
-    tenantId: TENANT,
+    tenantId: sandboxId,
     path: urlPath,
   })) as FileMeta | null;
 

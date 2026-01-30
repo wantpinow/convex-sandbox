@@ -6,8 +6,6 @@ import { api } from "../../convex/_generated/api.js";
 import { getParentPath, getBaseName } from "../lib/paths.js";
 import type { Id } from "../../convex/_generated/dataModel.js";
 
-const TENANT = "default";
-
 /** Collect the full request body into a Buffer. */
 function collectBody(req: IncomingMessage): Promise<Buffer> {
   return new Promise((resolve, reject) => {
@@ -21,6 +19,7 @@ function collectBody(req: IncomingMessage): Promise<Buffer> {
 export async function handlePut(
   req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   if (urlPath === "/") {
@@ -35,7 +34,7 @@ export async function handlePut(
 
   // Reserve a slot in Convex (pending state)
   const { id, objectKey } = await convex.mutation(api.files.beginWrite, {
-    tenantId: TENANT,
+    tenantId: sandboxId,
     path: urlPath,
     name,
     parentPath,

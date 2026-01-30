@@ -3,11 +3,10 @@ import { convex } from "../lib/convex-client.js";
 import { api } from "../../convex/_generated/api.js";
 import { getParentPath, getBaseName } from "../lib/paths.js";
 
-const TENANT = "default";
-
 export async function handleMkcol(
   _req: IncomingMessage,
   res: ServerResponse,
+  sandboxId: string,
   urlPath: string
 ): Promise<void> {
   if (urlPath === "/") {
@@ -21,7 +20,7 @@ export async function handleMkcol(
   const parentPath = getParentPath(urlPath);
 
   await convex.mutation(api.files.ensureDir, {
-    tenantId: TENANT,
+    tenantId: sandboxId,
     path: urlPath,
     name,
     parentPath,
