@@ -1,0 +1,12 @@
+{
+  "name": "convex-sandbox",
+  "version": "1.0.0",
+  "description": "A sandbox for Convex",
+  "scripts": {
+    "dev": "convex dev"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "convex": "^1.34.1"
+  }
+}
