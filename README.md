@@ -1,3 +1,5 @@
+> This repo is WIP. Do not use directly in production.
+
 # Convex Sandbox
 
 Persistent bash sandboxes backed by Convex, using Vercel's [`just-bash`](https://github.com/nicolo-ribaudo/just-bash) for in-memory command execution and Convex file storage for filesystem persistence. No VMs or containers involved.
