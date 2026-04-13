@@ -2,7 +2,7 @@
 
 # Convex Sandbox
 
-Persistent bash sandboxes backed by Convex, using Vercel's [`just-bash`](https://github.com/nicolo-ribaudo/just-bash) for in-memory command execution and Convex file storage for filesystem persistence. No VMs or containers involved.
+Persistent bash sandboxes backed by Convex, using Vercel's [`just-bash`](https://github.com/vercel-labs/just-bash) for in-memory command execution and Convex file storage for filesystem persistence. No VMs or containers involved.
 
 https://github.com/user-attachments/assets/15027d2d-e41e-4bbb-84cc-04163ea38207
 
@@ -172,7 +172,7 @@ components/
 
 | Package | Role |
 |---------|------|
-| [`just-bash`](https://github.com/nicolo-ribaudo/just-bash) | In-memory bash interpreter with virtual filesystem |
+| [`just-bash`](https://github.com/vercel-labs/just-bash) | In-memory bash interpreter with virtual filesystem |
 | [`convex`](https://convex.dev) | Database, file storage, serverless functions |
 | [`@convex-dev/agent`](https://github.com/get-convex/agent) | AI agent with tool calling |
 | [`@ai-sdk/gateway`](https://sdk.vercel.ai) | Vercel AI Gateway provider |
